@@ -2,7 +2,6 @@
 <package >
   <metadata>
     <id>Psns.Common.Security.ClientCertificateHandling</id>
-    <version>1.1.0.1</version>
     <title>Client Certificate Handling</title>
     <authors>Jeff Purcell</authors>
     <owners>109.14</owners>
