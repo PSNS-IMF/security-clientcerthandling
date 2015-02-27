@@ -4,7 +4,7 @@
   <PropertyGroup>
     <SolutionName>ClientCertificateHandling</SolutionName>
     <ProjectName>Psns.Common.Security.$(SolutionName)</ProjectName>
-    <OutDir>src\$(ProjectName)\bin\$(Configuration)\</OutDir>
+    <OutDir>src\$(SolutionName)\bin\$(Configuration)\</OutDir>
     <AssemblyPath>$(OutDir)$(ProjectName).dll</AssemblyPath>
     <XmlDocPath>$(OutDir)$(ProjectName).xml</XmlDocPath>
     <AssemblyPath45>$(OutDir)net45\$(ProjectName).dll</AssemblyPath45>
