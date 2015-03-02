@@ -10,12 +10,16 @@
     <licenseUrl>https://github.com/PSNS-IMF/security-clientcerthandling/blob/master/LICENSE.md</licenseUrl>
     <description>Provides modules for loading client certificates from http requests.</description>
     <releaseNotes>
+      ## 1.1.0.2
+      ### Bug Fix
+      * Fixing test project reference to the latest BDD library
+
       ## 1.1.0.1
       ### Features
       * Initial release
     </releaseNotes>
     <version>$version$</version>
-    <tags>PSNS security certificate F5 client authentication ASP.NET</tags>
+    <tags>PSNS security certificate client authentication ASP.NET</tags>
     <dependencies>
       <dependency id="Psns.Common.Web.Adapters" version="" />
     </dependencies>
