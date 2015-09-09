@@ -42,10 +42,10 @@ namespace ClientCertificateHandling.UnitTests
         [TestMethod]
         public void TheTheCorrectDodUserShouldBeReturned()
         {
-            Assert.AreEqual<int>(1234567890, User.DodId);
-            Assert.AreEqual<string>("test", User.FirstName);
-            Assert.AreEqual<string>("user", User.LastName);
-            Assert.AreEqual<string>("middle", User.MiddleName);
+            Assert.AreEqual("1234567890", User.DodId);
+            Assert.AreEqual("test", User.FirstName);
+            Assert.AreEqual("user", User.LastName);
+            Assert.AreEqual("middle", User.MiddleName);
         }
     }
 
@@ -62,10 +62,10 @@ namespace ClientCertificateHandling.UnitTests
         [TestMethod]
         public void TheTheCorrectDodUserShouldBeReturned()
         {
-            Assert.AreEqual<int>(1234567890, User.DodId);
-            Assert.AreEqual<string>("test", User.FirstName);
-            Assert.AreEqual<string>("user", User.LastName);
-            Assert.AreEqual<string>("middle.alt", User.MiddleName);
+            Assert.AreEqual("1234567890", User.DodId);
+            Assert.AreEqual("test", User.FirstName);
+            Assert.AreEqual("user", User.LastName);
+            Assert.AreEqual("middle.alt", User.MiddleName);
         }
     }
 
@@ -79,14 +79,74 @@ namespace ClientCertificateHandling.UnitTests
             HttpClientCertificateAdapter.Subject = string.Empty;
         }
 
-        public override void Act()
-        {
-
-        }
+        public override void Act() { }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidCertificateException))]
         public void ThenAnInvalidCertificateExceptionShouldBeThrown()
+        {
+            User = Parser.Parse(CrlCheckMode.Offline);
+            Assert.Fail();
+        }
+    }
+
+    [TestClass]
+    public class AndTheDodIdIsNotAnInteger : WhenWorkingWithTheLocalCertificateParser
+    {
+        public override void Arrange()
+        {
+            base.Arrange();
+
+            HttpClientCertificateAdapter.Subject = "CN=user.test.middle.123456789a";
+        }
+
+        public override void Act() { }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void ThenAnInvalidOperationExceptionShouldBeThrown()
+        {
+            User = Parser.Parse(CrlCheckMode.Offline);
+            Assert.Fail();
+        }
+    }
+
+    [TestClass]
+    public class AndTheDodIdLengthIsLessThanTen : WhenWorkingWithTheLocalCertificateParser
+    {
+        public override void Arrange()
+        {
+            base.Arrange();
+
+            HttpClientCertificateAdapter.Subject = "CN=user.test.middle.123456789";
+        }
+
+        public override void Act() { }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void ThenAnInvalidOperationExceptionShouldBeThrown()
+        {
+            User = Parser.Parse(CrlCheckMode.Offline);
+            Assert.Fail();
+        }
+    }
+
+    [TestClass]
+    public class AndTheDodIdLengthIsGreaterThanTen : WhenWorkingWithTheLocalCertificateParser
+    {
+        public override void Arrange()
+        {
+            base.Arrange();
+
+            HttpClientCertificateAdapter.Subject = "CN=user.test.middle.12345678901";
+        }
+
+        public override void Act() { }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void ThenAnInvalidOperationExceptionShouldBeThrown()
         {
             User = Parser.Parse(CrlCheckMode.Offline);
             Assert.Fail();

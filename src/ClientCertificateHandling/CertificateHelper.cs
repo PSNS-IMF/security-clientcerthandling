@@ -31,24 +31,21 @@ namespace Psns.Common.Security.ClientCertificateHandling
                     var segments = trimmed.Substring(3, trimmed.Length - 3).Split('.');
                     for(int i = segments.Length - 1; i >= 0; i--)
                     {
-                        int edipi;
-                        if(int.TryParse(segments[i], out edipi))
+                        if(string.IsNullOrEmpty(user.DodId))
                         {
-                            user.DodId = edipi;
+                            long dodId;
+                            if(segments[i].Length != 10 || !Int64.TryParse(segments[i], out dodId))
+                                throw new InvalidOperationException(string.Format("The Edipi value {0} is not valid", segments[i]));
+                            else
+                                user.DodId = segments[i];
                         }
-                        else
-                        {
-                            if(i < segments.Length - 1)
-                            {
-                                if(string.IsNullOrEmpty(user.MiddleName))
-                                    user.MiddleName = segments[i];
-                                else if(string.IsNullOrEmpty(user.FirstName))
-                                    user.FirstName = segments[i];
-                                else if(string.IsNullOrEmpty(user.LastName))
-                                    user.LastName = segments[i];
-                                else user.MiddleName += "." + segments[i];
-                            }
-                        }
+                        else if(string.IsNullOrEmpty(user.MiddleName))
+                            user.MiddleName = segments[i];
+                        else if(string.IsNullOrEmpty(user.FirstName))
+                            user.FirstName = segments[i];
+                        else if(string.IsNullOrEmpty(user.LastName))
+                            user.LastName = segments[i];
+                        else user.MiddleName += "." + segments[i];
                     }
 
                     break;

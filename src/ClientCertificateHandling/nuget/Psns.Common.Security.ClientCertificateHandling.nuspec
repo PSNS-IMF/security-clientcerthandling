@@ -10,6 +10,10 @@
     <licenseUrl>https://github.com/PSNS-IMF/security-clientcerthandling/blob/master/LICENSE.md</licenseUrl>
     <description>Provides modules for loading client certificates from http requests.</description>
     <releaseNotes>
+      ## 2.0.0
+      ### Bug Fix
+      * Fixed User.DodId to be able to represent values greater than Max Int.
+
       ## 1.1.0.2
       ### Bug Fix
       * Fixing test project reference to the latest BDD library

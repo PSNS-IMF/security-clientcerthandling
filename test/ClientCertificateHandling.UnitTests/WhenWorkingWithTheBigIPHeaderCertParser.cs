@@ -62,7 +62,7 @@ namespace ClientCertificateHandling.UnitTests
         [TestMethod]
         public void ThenTheCorrectUserShouldBeReturned()
         {
-            Assert.AreEqual<int>(1234567890, User.DodId);
+            Assert.AreEqual<string>("1234567890", User.DodId);
             Assert.AreEqual<string>("firstname", User.FirstName);
             Assert.AreEqual<string>("lastname", User.LastName);
             Assert.AreEqual<string>("middle", User.MiddleName);
