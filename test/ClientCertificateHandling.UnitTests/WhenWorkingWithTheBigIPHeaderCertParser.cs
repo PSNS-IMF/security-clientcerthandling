@@ -1,118 +1,65 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using System.IO;
-using System.Web;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Psns.Common.Security.ClientCertificateHandling;
+using System;
 using System.Collections.Specialized;
 using System.Security.Cryptography.X509Certificates;
-
-using Psns.Common.Security.ClientCertificateHandling;
-using Psns.Common.Test.BehaviorDrivenDevelopment;
-using Psns.Common.Web.Adapters;
-
-using Moq;
+using static Psns.Common.Functional.Prelude;
 
 namespace ClientCertificateHandling.UnitTests
 {
-    public class WhenWorkingWithTheBigIPHeaderCertParser : BehaviorDrivenDevelopmentCaseTemplate
-    {
-        protected BigIPHeaderCertificateParser Parser;
-        protected DodUser User;
-
-        public override void Arrange()
-        {
-            base.Arrange();
-
-            var mockContext = new Mock<HttpContextBase>();
-            var mockRequest = new Mock<HttpRequestBase>();
-            var mockResponse = new Mock<HttpResponseBase>();
-
-            mockRequest.Setup(r => r.Url).Returns(new Uri("http://test.com"));
-            mockRequest.SetupGet(r => r.Headers).Returns(new NameValueCollection());
-
-            mockContext.Setup(c => c.Request).Returns(mockRequest.Object);
-            mockContext.Setup(c => c.Response).Returns(mockResponse.Object);
-
-            HttpContextAdapter.Current = mockContext.Object;
-
-            Parser = new BigIPHeaderCertificateParser();
-        }
-
-        public override void Act()
-        {
-            base.Act();
-
-            User = Parser.Parse(CrlCheckMode.Offline);
-        }
-    }
-
     [TestClass]
-    public class AndParsingAValidCert : WhenWorkingWithTheBigIPHeaderCertParser
+    public class WhenWorkingWithTheBigIPHeaderCertParser
     {
-        public override void Arrange()
+        [TestMethod]
+        public void ParsingAValidCert()
         {
-            base.Arrange();
+            var user = new X509Certificate2(Properties.Resources.testcert).ExtractDodUser();
 
-            ChainStatusWhiteListPolicy.Add(X509ChainStatusFlags.UntrustedRoot);
-
-            HttpContextAdapter.Current.Request.Headers.Add("ssl.client_cert", 
-                Convert.ToBase64String(ClientCertificateHandling.UnitTests.Properties.Resources.testcert));
+            Assert.AreEqual("1234567890", user.DodId);
+            Assert.AreEqual("firstname", user.FirstName);
+            Assert.AreEqual("lastname", user.LastName);
+            Assert.AreEqual("middle", user.MiddleName);
         }
 
         [TestMethod]
-        public void ThenTheCorrectUserShouldBeReturned()
+        public void ParsingAValidCertBinaryString()
         {
-            Assert.AreEqual<string>("1234567890", User.DodId);
-            Assert.AreEqual<string>("firstname", User.FirstName);
-            Assert.AreEqual<string>("lastname", User.LastName);
-            Assert.AreEqual<string>("middle", User.MiddleName);
-        }
-    }
+            var headers = new NameValueCollection();
+            var certBinaryString = Convert.ToBase64String(Properties.Resources.testcert);
+            headers.Add(Constants.F5CertificateBinaryHeaderValueName, certBinaryString);
 
-    [TestClass]
-    public class AndParsingAnInvalidCert : WhenWorkingWithTheBigIPHeaderCertParser
-    {
-        public override void Arrange()
-        {
-            base.Arrange();
+            var user = certBinaryString.ExtractDodUser(
+                headers, 
+                CrlCheckMode.Offline, 
+                Cons(X509ChainStatusFlags.UntrustedRoot));
 
-            HttpContextAdapter.Current.Request.Headers.Add("ssl.client_cert",
-                Convert.ToBase64String(new byte[] { 0, 1, 2 }));
-        }
-
-        public override void Act()
-        {
+            Assert.AreEqual("1234567890", user.DodId);
+            Assert.AreEqual("firstname", user.FirstName);
+            Assert.AreEqual("lastname", user.LastName);
+            Assert.AreEqual("middle", user.MiddleName);
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidCertificateException))]
-        public void ThenAnInvalidCertificateExceptionShouldBeThrown()
+        public void ParsingInvalidCert()
         {
-            User = Parser.Parse();
+            var headers = new NameValueCollection();
+            var certBinaryString = Convert.ToBase64String(Properties.Resources.testcert);
+            headers.Add(Constants.F5CertificateBinaryHeaderValueName, certBinaryString);
+
+            var user = Convert.ToBase64String(new byte[] { 1, 2, 3 }).ExtractDodUser(headers, CrlCheckMode.Offline, Empty<X509ChainStatusFlags>());
             Assert.Fail();
         }
-    }
-
-    [TestClass]
-    public class AndParsingANonVerifiableCert : WhenWorkingWithTheBigIPHeaderCertParser
-    {
-        public override void Arrange()
-        {
-            base.Arrange();
-
-            HttpContextAdapter.Current.Request.Headers.Add("ssl.client_cert",
-                Convert.ToBase64String(new byte[0]));
-        }
-
-        public override void Act()
-        {
-        }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidCertificateException))]
-        public void ThenAnInvalidCertificateExceptionShouldBeThrown()
+        public void ParsingUnvalidatableCert()
         {
-            User = Parser.Parse();
+            var headers = new NameValueCollection();
+            var certBinaryString = Convert.ToBase64String(Properties.Resources.testcert);
+            headers.Add(Constants.F5CertificateBinaryHeaderValueName, certBinaryString);
+
+            var user = Convert.ToBase64String(new byte[0]).ExtractDodUser(headers, CrlCheckMode.Offline, Empty<X509ChainStatusFlags>());
             Assert.Fail();
         }
     }

@@ -10,6 +10,9 @@
     <licenseUrl>https://github.com/PSNS-IMF/security-clientcerthandling/blob/master/LICENSE.md</licenseUrl>
     <description>Provides modules for loading client certificates from http requests.</description>
     <releaseNotes>
+      ## 3.0.0
+      * Converting to .NETStandard and refactoring towards a stateless implementation.
+
       ## 2.0.0
       ### Bug Fix
       * Fixed User.DodId to be able to represent values greater than Max Int.
@@ -25,11 +28,19 @@
     <version>$version$</version>
     <tags>PSNS security certificate client authentication ASP.NET</tags>
     <dependencies>
-      <dependency id="Psns.Common.Web.Adapters" version="" />
+      <group targetFramework=".NETStandard1.6">
+        <dependency Update="NETStandard.Library" Version="2.0.2" exclude="Build,Analyzers" />
+        <dependency Include="System.Collections.Specialized" Version="4.3.0" exclude="Build,Analyzers" />
+        <dependency Include="System.Security.Cryptography.Primitives" Version="4.3.0" exclude="Build,Analyzers" />
+        <dependency Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" exclude="Build,Analyzers" />
+      </group>
+      <group>
+        <dependency Include="Psns.Common.Functional" Version="2018.6.15.1" exclude="Build,Analyzers" />
+        <dependency Include="Psns.Common.SystemExtensions" Version="2018.6.11.1" exclude="Build,Analyzers" />
+      </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="..\bin\$configuration$\Psns.Common.Security.ClientCertificateHandling.*" target="lib\net40\" />
-    <file src="..\bin\$configuration$\net45\Psns.Common.Security.ClientCertificateHandling.*" target="lib\net45\" />
+    <file src="Psns.Common.Security.ClientCertificateHandling\bin\$configuration$\**\Psns.Common.Security.ClientCertificateHandling.*" target="lib\" exclude="**\*.dll.config;**\*Tests*;**\*Test*;**\*.deps.json" />
   </files>
 </package>

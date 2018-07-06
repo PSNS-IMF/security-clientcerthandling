@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Psns.Common.Security.ClientCertificateHandling
+﻿namespace Psns.Common.Security.ClientCertificateHandling
 {
     /// <summary>
     /// Basic properties of every DodUser
@@ -15,8 +10,19 @@ namespace Psns.Common.Security.ClientCertificateHandling
         /// </summary>
         public string DodId { get; set; }
 
+        /// <summary>
+        /// First Name
+        /// </summary>
         public string FirstName { get; set; }
+
+        /// <summary>
+        /// Middle Name
+        /// </summary>
         public string MiddleName { get; set; }
+
+        /// <summary>
+        /// Last Name
+        /// </summary>
         public string LastName { get; set; }
     }
 }
