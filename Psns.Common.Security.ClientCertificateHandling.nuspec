@@ -29,14 +29,14 @@
     <tags>PSNS security certificate client authentication ASP.NET</tags>
     <dependencies>
       <group targetFramework=".NETStandard1.6">
-        <dependency Update="NETStandard.Library" Version="2.0.2" exclude="Build,Analyzers" />
-        <dependency Include="System.Collections.Specialized" Version="4.3.0" exclude="Build,Analyzers" />
-        <dependency Include="System.Security.Cryptography.Primitives" Version="4.3.0" exclude="Build,Analyzers" />
-        <dependency Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" exclude="Build,Analyzers" />
+        <dependency id="NETStandard.Library" version="2.0.2" exclude="Build,Analyzers" />
+        <dependency id="System.Collections.Specialized" version="4.3.0" exclude="Build,Analyzers" />
+        <dependency id="System.Security.Cryptography.Primitives" version="4.3.0" exclude="Build,Analyzers" />
+        <dependency id="System.Security.Cryptography.X509Certificates" version="4.3.2" exclude="Build,Analyzers" />
       </group>
       <group>
-        <dependency Include="Psns.Common.Functional" Version="2018.6.15.1" exclude="Build,Analyzers" />
-        <dependency Include="Psns.Common.SystemExtensions" Version="2018.6.11.1" exclude="Build,Analyzers" />
+        <dependency id="Psns.Common.Functional" version="2018.6.15.1" exclude="Build,Analyzers" />
+        <dependency id="Psns.Common.SystemExtensions" version="2018.6.11.1" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>
