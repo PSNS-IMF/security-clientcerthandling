@@ -41,6 +41,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Psns.Common.Security.ClientCertificateHandling\bin\$configuration$\**\Psns.Common.Security.ClientCertificateHandling.*" target="lib\" exclude="**\*.dll.config;**\*Tests*;**\*Test*;**\*.deps.json" />
+    <file src="ClientCertificateHandling\bin\$configuration$\**\Psns.Common.Security.ClientCertificateHandling.*" target="lib\" exclude="**\*.dll.config;**\*Tests*;**\*Test*;**\*.deps.json" />
   </files>
 </package>
