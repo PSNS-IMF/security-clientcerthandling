@@ -39,15 +39,16 @@ namespace Psns.Common.Security.ClientCertificateHandling
                             if (segments[i].Length != 10 || !Int64.TryParse(segments[i], out dodId))
                                 throw new InvalidOperationException(string.Format("The Edipi value {0} is not valid", segments[i]));
                             else
-                                user.DodId = segments[i];
+                                user = user.WithDodId(segments[i]);
                         }
-                        else if (string.IsNullOrEmpty(user.MiddleName))
-                            user.MiddleName = segments[i];
-                        else if (string.IsNullOrEmpty(user.FirstName))
-                            user.FirstName = segments[i];
-                        else if (string.IsNullOrEmpty(user.LastName))
-                            user.LastName = segments[i];
-                        else user.MiddleName += "." + segments[i];
+                        else if (user.MiddleName.IsNone)
+                            user = user.WithMiddleName(segments[i]);
+                        else if (user.FirstName.IsNone)
+                            user = user.WithFirstName(segments[i]);
+                        else if (user.LastName.IsNone)
+                            user = user.WithLastName(segments[i]);
+                        else user = user.WithMiddleName(
+                            user.MiddleName.Match(mn => mn, () => string.Empty) + "." + segments[i]);
                     }
 
                     break;
@@ -63,7 +64,14 @@ namespace Psns.Common.Security.ClientCertificateHandling
         /// <param name="self"></param>
         /// <returns>A DodUser</returns>
         public static DodUser ExtractDodUser(this X509Certificate2 self) =>
-            self.Subject.FromSubject();
+            self
+                .Subject
+                .FromSubject()
+                .WithEmail(
+                    Try(() => self.GetNameInfo(X509NameType.EmailName, false))
+                        .Match(
+                            success: email => email,
+                            fail: ex => string.Empty));
 
         /// <summary>
         /// Assumes that <paramref name="self"/> is the base 64 string encoded binary of a <see cref="X509Certificate2"/>.
