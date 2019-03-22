@@ -10,6 +10,9 @@
     <licenseUrl>https://github.com/PSNS-IMF/security-clientcerthandling/blob/master/LICENSE.md</licenseUrl>
     <description>Provides modules for loading client certificates from http requests.</description>
     <releaseNotes>
+      ## 3.0.1
+      * Adding more X509Certificate2 extensions
+
       ## 3.0.0
       * Converting to .NETStandard and refactoring towards a stateless implementation.
 
@@ -37,6 +40,7 @@
       <group>
         <dependency id="Psns.Common.Functional" version="2018.6.15.1" exclude="Build,Analyzers" />
         <dependency id="Psns.Common.SystemExtensions" version="2018.6.11.1" exclude="Build,Analyzers" />
+        <dependency id="System.ValueTuple" version="4.5.0" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>

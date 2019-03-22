@@ -3,11 +3,12 @@
   <PropertyGroup>
     <TargetFrameworks>net45;net451;net452;net46;netstandard1.6</TargetFrameworks>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <AssemblyVersion>3.0.0.0</AssemblyVersion>
-    <FileVersion>3.0.0.0</FileVersion>
+    <AssemblyVersion>3.0.0.1</AssemblyVersion>
+    <FileVersion>3.0.0.1</FileVersion>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Psns.Common.Security.ClientCertificateHandling.xml</DocumentationFile>
     <AssemblyName>Psns.Common.Security.ClientCertificateHandling</AssemblyName>
     <RootNamespace>Psns.Common.Security.ClientCertificateHandling</RootNamespace>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard1.6'">
@@ -20,6 +21,7 @@
   <ItemGroup>
     <PackageReference Include="Psns.Common.Functional" Version="2018.6.15.1" />
     <PackageReference Include="Psns.Common.SystemExtensions" Version="2018.6.11.1" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
   
 </Project>
