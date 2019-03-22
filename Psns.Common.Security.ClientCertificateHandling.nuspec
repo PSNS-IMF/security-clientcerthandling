@@ -10,6 +10,9 @@
     <licenseUrl>https://github.com/PSNS-IMF/security-clientcerthandling/blob/master/LICENSE.md</licenseUrl>
     <description>Provides modules for loading client certificates from http requests.</description>
     <releaseNotes>
+      ## 3.0.2
+      * Adding more DodUser extensions
+
       ## 3.0.1
       * Adding more X509Certificate2 extensions
 
@@ -34,6 +37,7 @@
       <group targetFramework=".NETStandard1.6">
         <dependency id="NETStandard.Library" version="2.0.2" exclude="Build,Analyzers" />
         <dependency id="System.Collections.Specialized" version="4.3.0" exclude="Build,Analyzers" />
+        <dependency id="System.Security.Claims" version="4.3.0" exclude="Build,Analyzers" />
         <dependency id="System.Security.Cryptography.Primitives" version="4.3.0" exclude="Build,Analyzers" />
         <dependency id="System.Security.Cryptography.X509Certificates" version="4.3.2" exclude="Build,Analyzers" />
       </group>

@@ -3,17 +3,22 @@
   <PropertyGroup>
     <TargetFrameworks>net45;net451;net452;net46;netstandard1.6</TargetFrameworks>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <AssemblyVersion>3.0.0.1</AssemblyVersion>
-    <FileVersion>3.0.0.1</FileVersion>
+    <AssemblyVersion>3.0.0.2</AssemblyVersion>
+    <FileVersion>3.0.0.2</FileVersion>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Psns.Common.Security.ClientCertificateHandling.xml</DocumentationFile>
     <AssemblyName>Psns.Common.Security.ClientCertificateHandling</AssemblyName>
     <RootNamespace>Psns.Common.Security.ClientCertificateHandling</RootNamespace>
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <NoWarn>1591;1584;1658;1573;1572</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard1.6'">
     <PackageReference Update="NETStandard.Library" Version="2.0.2" />
     <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
+    <PackageReference Include="System.Security.Claims" Version="4.3.0" />
     <PackageReference Include="System.Security.Cryptography.Primitives" Version="4.3.0" />
     <PackageReference Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
   </ItemGroup>

@@ -1,6 +1,12 @@
 ﻿using Psns.Common.Functional;
+
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+
 using static Psns.Common.Functional.Prelude;
+using static Psns.Common.Security.ClientCertificateHandling.Constants;
 
 namespace Psns.Common.Security.ClientCertificateHandling
 {
@@ -122,5 +128,24 @@ namespace Psns.Common.Security.ClientCertificateHandling
         /// <returns></returns>
         public static DodUser WithEmail(this DodUser self, string email) =>
             new DodUser(self.DodId, self.FirstName, self.MiddleName, self.LastName, email);
+
+        /// <summary>
+        /// Generates <see cref="Claim"/>s from a <see cref="DodUser"/>.
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static IEnumerable<Claim> AsClaims(this DodUser self) =>
+            Cons(
+                (FirstNameClaimTypeName, self.FirstName),
+                (LastNameClaimTypeName, self.LastName),
+                (MiddleNameClaimTypeName, self.MiddleName),
+                (EmailClaimTypeName, self.EmailAddress),
+                (DodIdClaimTypeName, self.DodId))
+                .Aggregate(
+                    Empty<Claim>(),
+                    (claims, next) =>
+                        next.Item2.Match(
+                            some: typeVal => claims.Append(tail: new Claim(next.Item1, typeVal)),
+                            none: () => claims));
     }
 }
